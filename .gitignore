@@ -1,0 +1,10 @@
+# Hue bridge pairing key: keep it off GitHub
+hue_key.json
+
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store

@@ -1,0 +1,14 @@
+[Unit]
+Description=zwiftlights - Hue lights follow trainer power zones
+After=network-online.target bluetooth.target
+Wants=network-online.target bluetooth.target
+
+[Service]
+User=__USER__
+WorkingDirectory=__DIR__
+ExecStart=__DIR__/venv/bin/python -u zwiftlights.py run
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

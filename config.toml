@@ -1,0 +1,33 @@
+# zwiftlights settings
+# After editing, restart the service:  sudo systemctl restart zwiftlights
+
+# Keep this in step with Zwift (zwift.com/settings/profile)
+ftp = 220
+
+# Bluetooth name of the trainer (or part of it). "python3 zwiftlights.py scan" lists them.
+trainer_name = "KICKR 59E9"
+
+# The Hue room (or zone) holding the cave lights. "python3 zwiftlights.py rooms" lists them.
+hue_room = "Zwift Cave"
+
+# Leave empty to find the bridge automatically, or put its IP here
+# (Hue app > Settings > Bridges > (i)).
+bridge_ip = ""
+
+# Seconds of power averaged together. Higher = calmer lights, slower to react.
+smoothing_seconds = 3
+
+# To drop a zone you must fall this % of FTP below the boundary (stops flicker).
+hysteresis_percent = 2
+
+# A new zone must hold this long before the lights change.
+min_zone_seconds = 1.5
+
+# After this many seconds without pedalling, the ride is considered over...
+idle_after_seconds = 90
+
+# ...and the lights go back to how they were ("restore"), switch "off", or "leave" as is.
+when_idle = "restore"
+
+# Colour fade time in milliseconds.
+fade_ms = 400
