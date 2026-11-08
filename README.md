@@ -38,8 +38,8 @@ Power is averaged over a few seconds, and there's a little hysteresis, so riding
 Flash Raspberry Pi OS Lite with [Raspberry Pi Imager](https://www.raspberrypi.com/software/) (set the hostname, Wi-Fi and SSH in its settings), then on the Pi:
 
 ```bash
-git clone https://github.com/<your-username>/zwiftlights.git
-cd zwiftlights
+git clone https://github.com/tomkealey/zwift-lights.git
+cd zwift-lights
 bash install.sh
 ```
 
