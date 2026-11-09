@@ -9,18 +9,29 @@ echo "==> Installing system packages"
 sudo apt-get update -qq
 sudo apt-get install -y -qq python3-venv bluez
 
-echo "==> Making sure $USER can use Bluetooth"
+echo "==> Making sure Bluetooth is on and $USER can use it"
 sudo usermod -aG bluetooth "$USER"
+sudo rfkill unblock bluetooth
+bluetoothctl power on > /dev/null 2>&1 || true
 
 echo "==> Creating Python environment (takes a few minutes on a Pi 3)"
 python3 -m venv venv
 venv/bin/pip install --quiet --upgrade pip
 venv/bin/pip install --quiet bleak
 
+echo "==> Installing Bluetooth boot recovery (for the Pi 3's sometimes-sleepy chip)"
+sudo install -m 755 bt-recover.sh /usr/local/sbin/bt-recover.sh
+sudo install -m 644 bt-recover.service /etc/systemd/system/bt-recover.service
+
 echo "==> Installing the background service"
 sed -e "s|__USER__|$USER|g" -e "s|__DIR__|$DIR|g" zwiftlights.service \
   | sudo tee /etc/systemd/system/zwiftlights.service > /dev/null
 sudo systemctl daemon-reload
+sudo systemctl enable --quiet bt-recover
+if systemctl is-active --quiet zwiftlights; then
+  echo "==> Restarting zwiftlights to pick up the update"
+  sudo systemctl restart zwiftlights
+fi
 
 cat <<EOF
 

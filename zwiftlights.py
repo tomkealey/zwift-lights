@@ -411,8 +411,19 @@ async def ble_loop(cfg, controller):
         return want in (dev.name or adv.local_name or "").lower()
 
     announced_missing = False
+    announced_no_adapter = False
     while True:
-        dev = await BleakScanner.find_device_by_filter(matches, timeout=15)
+        try:
+            dev = await BleakScanner.find_device_by_filter(matches, timeout=15)
+        except Exception as e:  # noqa: BLE001 (e.g. Bluetooth off or the chip not up yet)
+            if not announced_no_adapter:
+                log.warning("Bluetooth not available (%s); retrying every 10 s.", e)
+                announced_no_adapter = True
+            await asyncio.sleep(10)
+            continue
+        if announced_no_adapter:
+            log.info("Bluetooth is back.")
+            announced_no_adapter = False
         if dev is None:
             if not announced_missing:
                 log.info('Waiting for "%s" (is the trainer awake?)', cfg["trainer_name"])

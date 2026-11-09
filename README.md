@@ -107,7 +107,8 @@ Zone colours and brightness are in the `ZONES` table near the top of `zwiftlight
 - **Trainer not found:** pedal to wake it, run `scan`, and check `trainer_name`. If Zwift is connected over Bluetooth and the trainer only allows one connection, switch Zwift to ANT+.
 - **Lights don't change:** run `rooms` and `test`. If the bridge can't be found, set `bridge_ip` (Hue app → Settings → Bridges → ⓘ).
 - **Lights too jumpy:** raise `smoothing_seconds` to 5 or so.
-- **Pi 3 under-voltage warnings:** use a proper 5.1 V / 2.5 A supply.
+- **Bluetooth missing after a cold start on a Pi 3** (`bluetoothctl show` says "No default controller available", `dmesg` shows `hci0: command 0x0c14 tx timeout`): the Pi 3's chip sometimes fails its startup, often after a voltage dip at power-on. `install.sh` adds a small `bt-recover` service that checks Bluetooth after every boot and resets the chip if needed; `journalctl -b -t bt-recover` shows whether it stepped in.
+- **Under-voltage:** `vcgencmd get_throttled` should say `throttled=0x0`. Anything with a 5 in it (e.g. `0x50000`) means the supply dips; use a native micro-USB 5.1 V / 2.5 A supply on a Pi 3 rather than a USB-C supply with an adapter.
 
 ## Credits
 

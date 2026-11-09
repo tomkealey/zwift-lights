@@ -1,0 +1,11 @@
+[Unit]
+Description=Recover Raspberry Pi 3 Bluetooth if it failed at boot
+After=bluetooth.service
+Before=zwiftlights.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/bt-recover.sh
+
+[Install]
+WantedBy=multi-user.target
